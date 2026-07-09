@@ -2,9 +2,9 @@ from fastapi import APIRouter, status, HTTPException, Depends
 from typing import List
 from sqlalchemy.orm import Session
 
-from crud.item import items, item, item_create, item_update, item_delete
-from schemas.items import ItemSchema, ItemPatchSchema
-from database import get_db
+from backend.crud.item import items, item, item_create, item_update, item_delete
+from backend.schemas.items import ItemSchema, ItemPatchSchema
+from backend.database import get_db
 
 router = APIRouter(
     tags=['items']

@@ -2,13 +2,13 @@ from fastapi import APIRouter, status, HTTPException, Depends
 from typing import List
 from sqlalchemy.orm import Session
 
-from schemas.category import CategorySchema, CategoryCreateSchema, CategoryPatchSchema, CategoryPutSchema
-from crud.categorydb import (
+from backend.schemas.category import CategorySchema, CategoryCreateSchema, CategoryPatchSchema, CategoryPutSchema
+from backend.crud.categorydb import (
 categories, category_detail, 
 category_create, category_delete, 
 category_update
 )
-from database import get_db
+from backend.database import get_db
 
 router = APIRouter(
     tags=["category"]

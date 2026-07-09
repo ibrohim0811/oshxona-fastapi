@@ -7,19 +7,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-PASSWORD = os.getenv("POSTGRES_PASSWORD")  
-USER = os.getenv("USER") 
-HOST = os.getenv("HOST") 
-PORT = os.getenv("PORT") 
-DB_NAME = os.getenv("DB_NAME") 
+# SQLite ulanish URL-manzili (DATABASE_URL env orqali qayta yozish mumkin)
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./oshxona.db")
 
-# 2. Ulanish URL-manzilini yaratish
-DATABASE_URL = f"postgresql://postgres:{PASSWORD}@{HOST}:{PORT}/{DB_NAME}"
-
-
+# SQLite uchun bir nechta thread ishlashi uchun check_same_thread=False kerak
+connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
 
 engine = create_engine(
-    DATABASE_URL  
+    DATABASE_URL,
+    connect_args=connect_args,
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

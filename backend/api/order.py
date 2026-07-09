@@ -2,9 +2,9 @@ from fastapi import APIRouter, status, HTTPException, Depends
 from typing import List
 from sqlalchemy.orm import Session
 
-from crud.order import order, orders, order_update, order_create, order_delete
-from schemas.orders import OrderSchema, OrderCreateSchema, OrderSchemaPatch, OrderSchemaid
-from database import get_db
+from backend.crud.order import order, orders, order_update, order_create, order_delete
+from backend.schemas.orders import OrderSchema, OrderCreateSchema, OrderSchemaPatch, OrderSchemaid
+from backend.database import get_db
 
 router = APIRouter(
     tags=['order']

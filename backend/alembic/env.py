@@ -16,9 +16,12 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from database import Base
-from models import Category, Item, Order, Customer
+from backend.database import Base, DATABASE_URL
+from backend.models import Category, Item, Order, Customer
 target_metadata = Base.metadata
+
+# database.py'dagi URL'ni yagona manba sifatida ishlatamiz
+config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

@@ -2,13 +2,13 @@ from fastapi import APIRouter, HTTPException, status, Depends
 from typing import List
 from sqlalchemy.orm import Session
 
-from crud.user import (
+from backend.crud.user import (
 customer, customers, 
 customer_update, customer_create, 
 customer_delete
 )
-from schemas.customer import CustomerSchema, CustomerSchemaPatch, CustomerChemaid
-from database import get_db
+from backend.schemas.customer import CustomerSchema, CustomerSchemaPatch, CustomerChemaid
+from backend.database import get_db
 
 router = APIRouter(
     tags=['customer']

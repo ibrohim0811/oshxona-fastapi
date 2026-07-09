@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models import Category
+from backend.models import Category
 
 
 

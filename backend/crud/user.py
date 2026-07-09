@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from models import Customer
+from backend.models import Customer
 
 
 def customers(db: Session):

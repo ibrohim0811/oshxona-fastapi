@@ -1,4 +1,10 @@
+# BASE_DIR (repo root) dan ishga tushadi.
+# backend.* importlari uchun PYTHONPATH root ga qo'yiladi.
+PY := backend/venv/bin/python
+export PYTHONPATH := $(CURDIR)
+
 run:
-	uvicorn main:app --reload
+	$(PY) -m uvicorn backend.main:app --reload
+
 mig:
-	alembic upgrade head
+	$(PY) -m alembic -c backend/alembic.ini upgrade head
