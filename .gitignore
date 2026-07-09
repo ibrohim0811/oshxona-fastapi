@@ -1,0 +1,21 @@
+# Python virtual muhitlari (Virtual Environments)
+venv/
+ENV/
+env/
+.venv/
+
+# Python kesh fayllari (Byte-compiled / optimize / dll files)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ma'lumotlar bazasi (Database)
+*.db
+*.sqlite3
+oshxona.db
+
+# IDE va tahrirlovchilar sozlamalari (Optional)
+.vscode/
+.idea/
+.DS_Store
