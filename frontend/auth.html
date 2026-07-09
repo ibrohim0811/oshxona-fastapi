@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oshxona — Kirish</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --card: #1a1d24;
+      --muted: #8b90a0;
+      --border: #2a2e39;
+      --accent: #ff7a18;
+      --accent-2: #ffb347;
+      --text: #eef0f5;
+      --danger: #ef4444;
+      --ok: #22c55e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(1200px 600px at 70% -10%, #2a1a0d, transparent),
+                  radial-gradient(900px 500px at -10% 110%, #14202b, transparent),
+                  var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .hero {
+      text-align: center;
+      max-width: 460px;
+    }
+    .logo {
+      font-size: 44px;
+      margin-bottom: 8px;
+    }
+    .hero h1 {
+      margin: 0 0 6px;
+      font-size: 30px;
+      letter-spacing: -0.02em;
+    }
+    .hero p {
+      color: var(--muted);
+      margin: 0 0 28px;
+      line-height: 1.5;
+    }
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn {
+      border: 0;
+      cursor: pointer;
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      transition: transform .12s ease, filter .12s ease, background .12s ease;
+    }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #1a1000;
+    }
+    .btn-primary:hover { filter: brightness(1.05); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { background: #20242e; }
+    .btn-block { width: 100%; }
+
+    /* Modal */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 8, 12, 0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 50;
+    }
+    .overlay.open { display: flex; }
+    .modal {
+      width: 100%;
+      max-width: 400px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 26px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.5);
+      animation: pop .18s ease;
+    }
+    @keyframes pop {
+      from { opacity: 0; transform: translateY(8px) scale(.98); }
+      to   { opacity: 1; transform: none; }
+    }
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .modal-head h2 { margin: 0; font-size: 20px; }
+    .close {
+      background: transparent;
+      border: 0;
+      color: var(--muted);
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .close:hover { color: var(--text); }
+    .sub { color: var(--muted); font-size: 13px; margin: 0 0 18px; }
+
+    .field { margin-bottom: 14px; }
+    .field label {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .field input {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #12151b;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+      transition: border .12s ease;
+    }
+    .field input:focus { border-color: var(--accent); }
+    .row { display: flex; gap: 10px; }
+    .row .field { flex: 1; }
+
+    .msg {
+      font-size: 13px;
+      min-height: 18px;
+      margin: 4px 0 12px;
+    }
+    .msg.err { color: var(--danger); }
+    .msg.ok  { color: var(--ok); }
+
+    .switch {
+      text-align: center;
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .switch a { color: var(--accent-2); cursor: pointer; text-decoration: none; font-weight: 600; }
+    .switch a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <!-- Landing -->
+  <div class="hero">
+    <div class="logo">🍽️</div>
+    <h1>Oshxona</h1>
+    <p>Buyurtmalarni boshqarish tizimiga xush kelibsiz. Davom etish uchun tizimga kiring yoki ro'yxatdan o'ting.</p>
+    <div class="actions">
+      <button class="btn btn-primary" onclick="openModal('login')">Kirish</button>
+      <button class="btn btn-ghost" onclick="openModal('register')">Ro'yxatdan o'tish</button>
+    </div>
+  </div>
+
+  <!-- LOGIN MODAL -->
+  <div class="overlay" id="login-overlay" onclick="onOverlayClick(event, 'login')">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <h2>Kirish</h2>
+        <button class="close" onclick="closeModal('login')" aria-label="Yopish">&times;</button>
+      </div>
+      <p class="sub">Hisobingizga kiring</p>
+      <form id="login-form" onsubmit="return handleLogin(event)">
+        <div class="field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email" placeholder="siz@example.com" required />
+        </div>
+        <div class="field">
+          <label for="login-password">Parol</label>
+          <input type="password" id="login-password" name="password" placeholder="••••••••" required />
+        </div>
+        <div class="msg" id="login-msg"></div>
+        <button type="submit" class="btn btn-primary btn-block">Kirish</button>
+      </form>
+      <div class="switch">
+        Hisobingiz yo'qmi? <a onclick="switchModal('login','register')">Ro'yxatdan o'ting</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGISTER MODAL -->
+  <div class="overlay" id="register-overlay" onclick="onOverlayClick(event, 'register')">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <h2>Ro'yxatdan o'tish</h2>
+        <button class="close" onclick="closeModal('register')" aria-label="Yopish">&times;</button>
+      </div>
+      <p class="sub">Yangi hisob yarating</p>
+      <form id="register-form" onsubmit="return handleRegister(event)">
+        <div class="row">
+          <div class="field">
+            <label for="reg-first">Ism</label>
+            <input type="text" id="reg-first" name="first_name" placeholder="Ism" required />
+          </div>
+          <div class="field">
+            <label for="reg-last">Familiya</label>
+            <input type="text" id="reg-last" name="last_name" placeholder="Familiya" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="reg-email">Email</label>
+          <input type="email" id="reg-email" name="email" placeholder="siz@example.com" required />
+        </div>
+        <div class="field">
+          <label for="reg-password">Parol</label>
+          <input type="password" id="reg-password" name="password" placeholder="••••••••" required />
+        </div>
+        <div class="msg" id="register-msg"></div>
+        <button type="submit" class="btn btn-primary btn-block">Ro'yxatdan o'tish</button>
+      </form>
+      <div class="switch">
+        Hisobingiz bormi? <a onclick="switchModal('register','login')">Kirish</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Backend hali yozilmagan. Endpointlarni keyin shu yerdan moslashtirasiz.
+    const API_BASE = "http://localhost:8000";
+
+    function openModal(name)  { document.getElementById(name + "-overlay").classList.add("open"); }
+    function closeModal(name) { document.getElementById(name + "-overlay").classList.remove("open"); }
+    function switchModal(from, to) { closeModal(from); openModal(to); }
+    function onOverlayClick(e, name) { if (e.target === e.currentTarget) closeModal(name); }
+
+    // Esc bilan yopish
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") { closeModal("login"); closeModal("register"); }
+    });
+
+    function setMsg(id, text, kind) {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = "msg " + (kind || "");
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      setMsg("login-msg", "Tekshirilmoqda...", "");
+      const body = {
+        email: document.getElementById("login-email").value,
+        password: document.getElementById("login-password").value,
+      };
+      try {
+        // TODO: backend tayyor bo'lgach endpointni moslang
+        const res = await fetch(`${API_BASE}/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        if (res.ok) {
+          setMsg("login-msg", "Muvaffaqiyatli! Yo'naltirilmoqda...", "ok");
+          window.location.href = "home.html";
+        } else {
+          setMsg("login-msg", "Email yoki parol noto'g'ri.", "err");
+        }
+      } catch (err) {
+        setMsg("login-msg", "Server bilan bog'lanib bo'lmadi (backend hali ishga tushmagan).", "err");
+      }
+      return false;
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      setMsg("register-msg", "Yaratilmoqda...", "");
+      const body = {
+        first_name: document.getElementById("reg-first").value,
+        last_name:  document.getElementById("reg-last").value,
+        email:      document.getElementById("reg-email").value,
+        password:   document.getElementById("reg-password").value,
+      };
+      try {
+        // TODO: backend tayyor bo'lgach endpointni moslang
+        const res = await fetch(`${API_BASE}/register`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        if (res.ok) {
+          setMsg("register-msg", "Hisob yaratildi! Endi kiring.", "ok");
+          setTimeout(() => switchModal("register", "login"), 900);
+        } else {
+          setMsg("register-msg", "Ro'yxatdan o'tishda xatolik.", "err");
+        }
+      } catch (err) {
+        setMsg("register-msg", "Server bilan bog'lanib bo'lmadi (backend hali ishga tushmagan).", "err");
+      }
+      return false;
+    }
+  </script>
+</body>
+</html>

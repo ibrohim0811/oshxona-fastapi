@@ -10,7 +10,7 @@ router = APIRouter(
     tags=['items']
 )
 
-@router.get('/items', response_model=List[ItemSchema])
+@router.get('/items/{name}', response_model=List[ItemSchema])
 def get_items(db: Session = Depends(get_db)):
     data = items(db=db)
     return data
@@ -22,6 +22,7 @@ def get_item(item_id: int, db: Session = Depends(get_db)):
     if data:
         return data
     raise HTTPException(404, "Bunday item mavjud emmas!")
+
 
 @router.post('/item/')
 def create_item(item: ItemSchema, db: Session = Depends(get_db)):

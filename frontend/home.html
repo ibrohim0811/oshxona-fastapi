@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oshxona — Bosh sahifa</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --sidebar: #14171e;
+      --card: #1a1d24;
+      --muted: #8b90a0;
+      --border: #2a2e39;
+      --accent: #ff7a18;
+      --accent-2: #ffb347;
+      --text: #eef0f5;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      min-width: 260px;
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 20px 20px 16px;
+      font-size: 18px;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand .logo { font-size: 24px; }
+
+    .side-title {
+      padding: 18px 20px 8px;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .side-title button {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 11px;
+      padding: 2px 6px;
+    }
+    .side-title button:hover { color: var(--text); border-color: var(--accent); }
+
+    .cat-list {
+      list-style: none;
+      margin: 0;
+      padding: 4px 12px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .cat-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 14px;
+      transition: background .12s ease;
+      margin-bottom: 2px;
+    }
+    .cat-item:hover { background: #1f232d; }
+    .cat-item.active {
+      background: linear-gradient(135deg, rgba(255,122,24,.18), rgba(255,179,71,.12));
+      color: var(--accent-2);
+    }
+    .cat-item .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .cat-item .count {
+      margin-left: auto;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .side-state {
+      padding: 14px 20px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .side-foot {
+      border-top: 1px solid var(--border);
+      padding: 14px 20px;
+    }
+    .link-out {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .link-out:hover { color: var(--text); }
+
+    /* Main */
+    .main { flex: 1; padding: 28px 34px; overflow-y: auto; height: 100vh; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .topbar h1 { margin: 0; font-size: 24px; letter-spacing: -0.02em; }
+    .topbar .sub { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+    .content-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .content-card .big { font-size: 40px; margin-bottom: 10px; }
+
+    /* Taom kartochkalari */
+    .item-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .item-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      transition: border .12s ease, transform .12s ease;
+    }
+    .item-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .item-card .ic-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .item-card h3 { margin: 0 0 6px; font-size: 16px; }
+    .item-card .about {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      flex: 1;
+      margin-bottom: 14px;
+    }
+    .item-card .price {
+      font-weight: 700;
+      color: var(--accent-2);
+      font-size: 16px;
+    }
+    .badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .badge.on  { background: rgba(34,197,94,.15); color: #4ade80; }
+    .badge.off { background: rgba(239,68,68,.15); color: #f87171; }
+    .empty {
+      color: var(--muted);
+      text-align: center;
+      padding: 40px;
+    }
+  </style>
+</head>
+<body>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="logo">🍽️</span>
+      <span>Oshxona</span>
+    </div>
+
+    <div class="side-title">
+      <span>Kategoriyalar</span>
+      <button onclick="loadCategories()" title="Yangilash">↻</button>
+    </div>
+
+    <ul class="cat-list" id="cat-list"></ul>
+    <div class="side-state" id="cat-state">Yuklanmoqda…</div>
+
+    <div class="side-foot">
+      <a class="link-out" href="auth.html">← Chiqish</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <h1 id="main-title">Bosh sahifa</h1>
+        <div class="sub" id="main-sub">Chap tomondan kategoriya tanlang</div>
+      </div>
+    </div>
+
+    <div class="content-card" id="content">
+      <div class="big">👋</div>
+      <div>Kategoriyani tanlab, unga tegishli taomlarni ko'ring.</div>
+    </div>
+  </main>
+
+  <script>
+    const API_BASE = "http://localhost:8000";
+    let allItems = [];   // barcha taomlar (bir marta yuklanadi)
+
+    async function loadData() {
+      await Promise.all([loadItems(), loadCategories()]);
+      // dastlab hamma taomni ko'rsatamiz
+      renderItems(null, "Barcha taomlar");
+    }
+
+    async function loadItems() {
+      try {
+        const res = await fetch(`${API_BASE}/items`);
+        if (!res.ok) throw new Error("bad status");
+        allItems = await res.json();
+      } catch (err) {
+        allItems = [];
+      }
+    }
+
+    async function loadCategories() {
+      const list = document.getElementById("cat-list");
+      const state = document.getElementById("cat-state");
+      state.style.display = "block";
+      state.textContent = "Yuklanmoqda…";
+      list.innerHTML = "";
+
+      // "Barchasi" doimiy elementi
+      const all = document.createElement("li");
+      all.className = "cat-item active";
+      all.innerHTML = `<span class="dot"></span><span class="name">Barchasi</span><span class="count"></span>`;
+      all.querySelector(".count").textContent = allItems.length;
+      all.onclick = () => selectCategory(null, "Barcha taomlar", all);
+      list.appendChild(all);
+
+      try {
+        const res = await fetch(`${API_BASE}/categories`);
+        if (!res.ok) throw new Error("bad status");
+        const data = await res.json();
+        state.style.display = "none";
+
+        data.forEach((cat) => {
+          const count = allItems.filter((it) => it.category_id === cat.id).length;
+          const li = document.createElement("li");
+          li.className = "cat-item";
+          li.dataset.id = cat.id;
+          li.innerHTML = `<span class="dot"></span><span class="name"></span><span class="count"></span>`;
+          li.querySelector(".name").textContent = cat.name;
+          li.querySelector(".count").textContent = count;
+          li.onclick = () => selectCategory(cat.id, cat.name, li);
+          list.appendChild(li);
+        });
+      } catch (err) {
+        state.style.display = "block";
+        state.textContent = "Kategoriyalarni yuklab bo'lmadi (backend ishga tushmagan?).";
+      }
+    }
+
+    function selectCategory(catId, title, el) {
+      document.querySelectorAll(".cat-item").forEach((n) => n.classList.remove("active"));
+      el.classList.add("active");
+      renderItems(catId, title);
+    }
+
+    function renderItems(catId, title) {
+      const list = catId == null ? allItems : allItems.filter((it) => it.category_id === catId);
+
+      document.getElementById("main-title").textContent = title;
+      document.getElementById("main-sub").textContent = `${list.length} ta taom`;
+
+      const content = document.getElementById("content");
+      content.className = ""; // content-card ramkasini olib tashlaymiz
+
+      if (list.length === 0) {
+        content.className = "content-card";
+        content.innerHTML = `<div class="big">🍽️</div><div>Bu kategoriyada hozircha taom yo'q.</div>`;
+        return;
+      }
+
+      const cards = list.map((it) => `
+        <div class="item-card">
+          <div class="ic-head">
+            <h3>${escapeHtml(it.name)}</h3>
+            <span class="badge ${it.is_active ? "on" : "off"}">${it.is_active ? "Mavjud" : "Yo'q"}</span>
+          </div>
+          <div class="about">${escapeHtml(it.about || "")}</div>
+          <div class="price">${formatPrice(it.price)} so'm</div>
+        </div>
+      `).join("");
+
+      content.innerHTML = `<div class="item-grid">${cards}</div>`;
+    }
+
+    function formatPrice(n) {
+      return (n ?? 0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+    function escapeHtml(s) {
+      const d = document.createElement("div");
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
