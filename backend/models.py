@@ -62,6 +62,6 @@ class Customer(Base):
     first_name: Mapped[str] = mapped_column(String(250))
     last_name: Mapped[str] = mapped_column(String(250))
     email: Mapped[str] = mapped_column(String(350), unique=True)
-    
+    hashed_password: Mapped[str] = mapped_column(String(500))
     # To'g'ri: Order'dagi 'customer' maydoniga bog'lanyapti
     orders: Mapped[list["Order"]] = relationship(back_populates="customer")

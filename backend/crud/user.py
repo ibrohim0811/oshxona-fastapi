@@ -41,3 +41,22 @@ def customer_delete(customer_id, db: Session):
     if customer_check:
         db.delete(customer_check)
         db.commit()
+
+
+def get_user_by_email(email: str, db: Session):
+    """Email bo'yicha foydalanuvchini qaytaradi (yoki None)."""
+    return db.query(Customer).filter(Customer.email == email).first()
+
+
+def create_user(first_name: str, last_name: str, email: str, hashed_password: str, db: Session):
+    """Hash qilingan parol bilan yangi foydalanuvchi yaratadi."""
+    new_user = Customer(
+        first_name=first_name,
+        last_name=last_name,
+        email=email,
+        hashed_password=hashed_password,
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
